@@ -45,8 +45,8 @@ nav.links a:hover{border-color:var(--blue)}
 nav.links{display:none!important}
 
 
-/* hero (photo slot: drop hero.jpg next to this file) */
-.hero{background:linear-gradient(180deg,rgba(5,28,44,.35) 0%,rgba(5,28,44,.88) 100%),url(hero.jpg) center/cover no-repeat,var(--navy);color:#fff;min-height:520px;display:flex;align-items:flex-end;padding:96px 0 48px;position:relative;overflow:hidden}
+/* hero */
+.hero{background:linear-gradient(180deg,rgba(5,28,44,.35) 0%,rgba(5,28,44,.88) 100%),var(--navy);color:#fff;min-height:520px;display:flex;align-items:flex-end;padding:96px 0 48px;position:relative;overflow:hidden}
 .hero .wrap{width:100%}
 .hero:after{content:"";position:absolute;right:-140px;top:-140px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#2251FF 0%,#042A76 55%,transparent 70%);opacity:.55;pointer-events:none}
 .hero .wrap{position:relative;z-index:1}
@@ -161,6 +161,16 @@ section.band tr.grp td{background:var(--bg)}
 .dcf td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .dcf tr.tot td{font-weight:600;color:var(--head)}
 details .tw{margin:16px 0}
+
+/* Exhibit 8: valores negativos, zero a direita, barras para a esquerda */
+.negchart .track{display:flex;justify-content:flex-end;border-right:2px solid var(--head)}
+.negchart .fill.neg{justify-content:flex-start;padding:0 0 0 8px;min-width:46px}
+.negchart .axis{display:flex;justify-content:space-between;font:400 12px var(--sans);color:var(--muted);margin-right:-8px;padding-top:2px}
+/* dica de deslize nas tabelas largas */
+.swipe{display:none;margin:18px 0 -14px;font:500 12px var(--sans);color:var(--blue);letter-spacing:.02em}
+.swipe.on{display:block}
+.tw.fade{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.tw.fade.end{-webkit-mask-image:none;mask-image:none}
 /* exhibits */
 figure{margin:44px 0 12px}
 figure .cap{font:500 13px var(--sans);color:var(--head);margin-bottom:4px}
@@ -451,7 +461,7 @@ footer a{color:#9fb4ff}
       <div class="cap"><em>Exhibit 8</em>The 1125R lost money, and keeping Buell loses money too, in every scenario</div>
       <div class="sub">Net present value, $ million (10 years, 8.4% discount rate)</div>
       <div class="legend"><span><i style="background:var(--navy)"></i>Ex ante: the $30m 1125R investment</span><span><i style="background:var(--blue)"></i>Keep Buell, with the product spending needed to stay competitive</span></div>
-      <div class="hbar" style="grid-template-columns:200px 1fr"><div>Bear<br><small style="color:var(--muted)">5% margin, flat</small> · 1125R</div><div class="track"><div class="fill alt" style="width:78.3%">−23.5</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill " style="width:91.7%">−27.5</div></div><div>Base<br><small style="color:var(--muted)">Harley’s hope</small> · 1125R</div><div class="track"><div class="fill alt" style="width:35.0%">−10.5</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill " style="width:48.7%">−14.6</div></div><div>Bull<br><small style="color:var(--muted)">15% margin, +10%/yr</small> · 1125R</div><div class="track"><div class="fill alt" style="width:4.0%">−1.2</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill " style="width:17.7%">−5.3</div></div></div>
+      <div class="hbar negchart" style="grid-template-columns:200px 1fr"><div>Bear<br><small style="color:var(--muted)">5% margin, flat</small> · 1125R</div><div class="track"><div class="fill neg alt" style="width:78.3%">−23.5</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill neg " style="width:91.7%">−27.5</div></div><div>Base<br><small style="color:var(--muted)">Harley’s hope</small> · 1125R</div><div class="track"><div class="fill neg alt" style="width:35.0%">−10.5</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill neg " style="width:48.7%">−14.6</div></div><div>Bull<br><small style="color:var(--muted)">15% margin, +10%/yr</small> · 1125R</div><div class="track"><div class="fill neg alt" style="width:4.0%">−1.2</div></div><div>&nbsp;&nbsp;&nbsp;&nbsp;Keep Buell</div><div class="track"><div class="fill neg " style="width:17.7%">−5.3</div></div><div></div><div class="axis"><span>−30</span><span>−25</span><span>−20</span><span>−15</span><span>−10</span><span>−5</span><span>0</span></div></div>
       <p class="src">Bear: 5% margin, flat volume. Base (Harley’s hope): 5% → 10% → 12.5%, +5% a year. Bull: up to 15%, +10% a year. Source: case pp. 6–7; author DCF.</p>
     </figure>
 
@@ -718,6 +728,30 @@ footer a{color:#9fb4ff}
   q.addEventListener('input',run);
   ul.addEventListener('click',function(e){if(e.target.closest('a'))box.classList.remove('open')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){box.classList.remove('open');document.getElementById('menu').classList.remove('open')}});
+})();
+
+// Dica de deslize nas tabelas largas
+(function(){
+  var tws=[].slice.call(document.querySelectorAll('.tw'));
+  tws.forEach(function(w){
+    var h=document.createElement('p');h.className='swipe';h.textContent='Swipe sideways to see all columns →';
+    w.parentNode.insertBefore(h,w);w._hint=h;
+    w.addEventListener('scroll',function(){
+      if(w.scrollLeft>8)h.classList.remove('on');
+      w.classList.toggle('end',w.scrollLeft+w.clientWidth>=w.scrollWidth-4);
+    },{passive:true});
+  });
+  function check(){
+    tws.forEach(function(w){
+      var over=w.scrollWidth>w.clientWidth+4;
+      w.classList.toggle('fade',over&&w.scrollLeft+w.clientWidth<w.scrollWidth-4);
+      if(!over)w._hint.classList.remove('on');
+      else if(w.scrollLeft<=8)w._hint.classList.add('on');
+    });
+  }
+  window.addEventListener('resize',check);window.addEventListener('load',check);
+  setTimeout(check,400);
+  document.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){setTimeout(check,50)})});
 })();
 
 // Theme toggle
